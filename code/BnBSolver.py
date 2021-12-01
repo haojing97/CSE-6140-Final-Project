@@ -5,4 +5,5 @@ class BnBSolver(BaseSolver):
         super().__init__()
 
     def solve(self, time, seed):
-        return super().solve(time, seed)
+        super().solve(time, seed)
+        
