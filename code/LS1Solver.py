@@ -15,8 +15,8 @@ class LS1Solver(BaseSolver):
         self.param = 0
 
         self.cur_route = []
-        self.next_route = []
         self.cur_cost = float('inf')
+        self.next_route = []
         self.next_cost = float('inf')
 
     # initialize temperature and annealing parameter
@@ -29,6 +29,8 @@ class LS1Solver(BaseSolver):
         self.cur_route = random.sample(
             range(self.size), self.size)
         self.cur_cost = self.get_cost(self.cur_route)
+        self.next_route = []
+        self.next_cost = float('inf')
         return
 
     def get_cost(self, route):
@@ -38,7 +40,7 @@ class LS1Solver(BaseSolver):
             res += self.matrix[route[i - 1]][route[i]]
         return res
 
-    # the probability of going to the next route
+    # the probability of moving to the next route
     def pr(self):
         delta = self.next_cost - self.cur_cost
         if delta <= 0:
@@ -60,7 +62,7 @@ class LS1Solver(BaseSolver):
             self.cur_route[i:j][::-1] + self.cur_route[j:]
         self.next_cost = self.get_cost(self.next_route)
 
-    # decide whether go to next route or not, if so, update relevant variables.
+    # decide whether to move to the next route or not, if so, update relevant variables.
     def update(self):
         should_update = True
         pr = self.pr()
@@ -72,7 +74,7 @@ class LS1Solver(BaseSolver):
             if self.cur_cost < self.sol:
                 self.sol = self.cur_cost
                 self.route = self.cur_route[:]
-        self.record_trace()
+                self.record_trace()
 
     def cooling(self):
         self.temp *= self.param
@@ -82,7 +84,7 @@ class LS1Solver(BaseSolver):
         for _ in range(self.restart):
             self.init_temp()
             self.init_route()
-            while self.temp > 1e-6:
+            while self.temp > 1e-9:
                 if time.time() >= cutoff + self.start:
                     break
                 self.generate_next()
