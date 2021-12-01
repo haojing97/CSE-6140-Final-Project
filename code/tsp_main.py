@@ -39,6 +39,6 @@ if __name__ == "__main__":
 
     solver = get_solver(args.alg)
     solver.read_data(args.inst)
-    solver.init_trace(get_filename(args) + '.trace')
+    solver.init_trace('output/' + get_filename(args) + '.trace')
     solver.solve(args.time, args.seed)
-    solver.write_solution(get_filename(args) + '.sol')
+    solver.write_solution('output/' + get_filename(args) + '.sol')

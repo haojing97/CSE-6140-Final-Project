@@ -7,11 +7,10 @@ import os
 class BaseSolver(object):
     def __init__(self, matrix=[]):
         self.matrix = matrix
-        self.route = []
         self.size = len(matrix)
+        self.start = 0  # start time of the 'solve' function
         self.sol = float('inf')
-        self.trace = []
-        self.start = 0
+        self.route = []
 
         return
 
@@ -53,4 +52,4 @@ class BaseSolver(object):
 
     def record_trace(self):
         self.trace_file.write(
-            str(time.time() - self.start) + ',' + str(self.sol) + '\n')
+            str('{:.2f}'.format(time.time() - self.start)) + ', ' + str(self.sol) + '\n')
