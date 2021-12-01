@@ -1,3 +1,6 @@
+'''
+This file contains the main function, where is the entry of the whole program.
+'''
 import argparse
 import os
 

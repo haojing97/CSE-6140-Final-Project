@@ -1,3 +1,6 @@
+'''
+Implementation of the SA algorithm.
+'''
 import math
 import random
 import time

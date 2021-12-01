@@ -1,3 +1,7 @@
+'''
+Implementation of the Base Solver.
+All the solvers will inherit from Base Solver, it provides some functions that is commonly used by different algorithms.
+'''
 import math
 import random
 import time

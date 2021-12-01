@@ -1,3 +1,6 @@
+'''
+Implementation of the Hill Climbing algorithm.
+'''
 import random
 import time
 from BaseSolver import BaseSolver

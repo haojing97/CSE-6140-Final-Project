@@ -1,3 +1,6 @@
+'''
+Implementation of the MST-APPROX algorithm based on Minimum Spanning Tree.
+'''
 from BaseSolver import BaseSolver
 import heapq
 import random
