@@ -31,7 +31,7 @@ class LS2Solver(BaseSolver):
 
     def find_best_neighbor(self):
         for i in range(self.size - 2):
-            for j in range(i + 3, min(self.size, self.size - 1 + i)):
+            for j in range(i + 2, min(self.size, self.size - 1 + i)):
                 new_route = self.cur_route[:i] + \
                     self.cur_route[i:j][::-1] + self.cur_route[j:]
                 new_cost = self.get_cost(new_route)
