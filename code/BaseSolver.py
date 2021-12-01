@@ -24,6 +24,7 @@ class BaseSolver(object):
                     list(map(float, lines[idx].strip().split()[-2:])))
                 idx += 1
 
+        # use matrix representation
         n = len(coordinates)
         self.size = n
         self.matrix = [[0] * n for _ in range(n)]

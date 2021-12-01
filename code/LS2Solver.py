@@ -38,7 +38,6 @@ class LS2Solver(BaseSolver):
                 if new_cost < self.best_neighbor_cost:
                     self.best_neighbor_cost = new_cost
                     self.best_neighbor_route = new_route
-
         return
 
     def update(self):
@@ -56,6 +55,7 @@ class LS2Solver(BaseSolver):
                 if time.time() > cutoff + self.start:
                     break
                 self.find_best_neighbor()
+                # reach local optimal
                 if self.best_neighbor_cost >= self.cur_cost:
                     break
                 self.update()

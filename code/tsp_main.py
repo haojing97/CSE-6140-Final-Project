@@ -16,6 +16,7 @@ def get_filename(args):
 
 
 def get_solver(alg):
+    # get solver by algorithm
     if alg == 'BnB':
         return BnBSolver()
     elif alg == 'Approx':
