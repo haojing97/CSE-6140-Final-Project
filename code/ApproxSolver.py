@@ -5,6 +5,7 @@ from BaseSolver import BaseSolver
 import heapq
 import random
 
+
 class ApproxSolver(BaseSolver):
     def __init__(self):
         super().__init__()
@@ -24,13 +25,15 @@ class ApproxSolver(BaseSolver):
         seen = set()
         while q:
             _, node, par = heapq.heappop(q)
-            if node in seen: continue
+            if node in seen:
+                continue
             seen.add(node)
             if par != None:
                 self.adjacent[par].append(node)
             for next_node in range(n):
                 if next_node not in seen:
-                    heapq.heappush(q, (self.matrix[node][next_node], next_node, node))
+                    heapq.heappush(
+                        q, (self.matrix[node][next_node], next_node, node))
 
     # Find the cycle using DFS
     def dfs(self, par):
@@ -43,7 +46,7 @@ class ApproxSolver(BaseSolver):
         super().solve(cutoff, seed)
         self.sol = 0
         self.prim()
-        #Form a complete cycle
+        # Form a complete cycle
         self.route = self.dfs(self.src)
         self.route.extend([self.src])
         # Calculate distance
