@@ -7,7 +7,7 @@ class Node:
     def __init__(self, path, matrix):
         self.path = copy.deepcopy(path)
         self.lower_bound = 0
-        self.m = matrix 
+        self.m = matrix
 
     def get_cur_distance(self):
         dist = 0
@@ -45,6 +45,12 @@ class BnBSolver(BaseSolver):
     
     # Get the MST total distance based on Prim algorithm
     def mst(self, not_seen):
+        m = [[] for _ in range(len(self.matrix))]
+        for i in not_seen:
+            for j in not_seen:
+                if i != j:
+                    heapq.heappush(m[i], (self.matrix[i][j], j))
+        
         cur = random.choice(list(not_seen))
         distance = 0
         seen = set()
@@ -62,11 +68,24 @@ class BnBSolver(BaseSolver):
             if cur in seen: continue
             seen.add(cur)
             not_seen.discard(cur)
+            '''
             for next_node in not_seen:
                 for i in seen:
                     if self.matrix[i][next_node] < tmp:
                         tmp = self.matrix[i][next_node]
                         tmp_node = next_node
+            '''
+            pair = []
+            for i in seen:
+                if len(m[i]) == 0: continue
+                while len(m[i]) and m[i][0][1] in seen:
+                    heapq.heappop(m[i])
+                if len(m[i]) == 0: continue
+                if m[i][0][0] < tmp:
+                    tmp = m[i][0][0]
+                    tmp_node = m[i][0][1]
+                    pair.extend([i, tmp_node])
+            heapq.heappop(m[pair[0]])
             cur = tmp_node
             distance += tmp
 
@@ -91,7 +110,7 @@ class BnBSolver(BaseSolver):
     def solve(self, cutoff, seed):
         super().solve(cutoff, seed)
         n = len(self.matrix)
-        node = Node([random.randint(0, n-1)], self.matrix)
+        node = Node([0], self.matrix)
         self.route, self.sol = self.get_upper_bound(node)
         self.record_trace()
         node.lower_bound = self.get_lower_bound(node)
@@ -109,7 +128,6 @@ class BnBSolver(BaseSolver):
                             cur_bound = self.get_lower_bound(new_node)
                             if cur_bound < self.sol:
                                 new_node.lower_bound = cur_bound
-                                print(new_node.lower_bound, new_node.path)
                                 heapq.heappush(q, new_node)
                             cur_path.pop()
                 else:
