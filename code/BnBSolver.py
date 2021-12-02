@@ -40,7 +40,7 @@ class BnBSolver(BaseSolver):
         route = node.path[:]
         node.path = node.path[:1]
         dist += self.matrix[last][0]
-        print(dist)
+
         return route, dist
     
     # Get the MST total distance based on Prim algorithm
@@ -92,10 +92,10 @@ class BnBSolver(BaseSolver):
         node.lower_bound = self.get_lower_bound(node)
         q = [node]
         heapq.heapify(q)
-
+        print(node.path)
         while q:
             cur = heapq.heappop(q)
-            if cur.lower_bound >= self.sol: continue
+            if cur.lower_bound > self.sol: continue
             else:
                 if len(cur.path) < n - 1:
                     cur_path = cur.path[:]
@@ -104,7 +104,7 @@ class BnBSolver(BaseSolver):
                             cur_path.append(i)
                             new_node = Node(copy.deepcopy(cur_path), self.matrix)
                             cur_bound = self.get_lower_bound(new_node)
-                            if cur_bound < self.sol:
+                            if cur_bound <= self.sol:
                                 new_node.lower_bound = cur_bound
                                 heapq.heappush(q, new_node)
                             cur_path.pop()
@@ -113,8 +113,9 @@ class BnBSolver(BaseSolver):
                     diff = [item for item in x if item not in cur.path]
                     last_node = diff[0]
                     cur.path.append(last_node)
-                    cur_dist = cur.get_cur_distance() + self.matrix[0][cur.path[-1]]
+                    cur_dist = cur.get_cur_distance() + self.matrix[cur.path[0]][cur.path[-1]]
                     if cur_dist < self.sol:
                         self.sol = cur_dist
                         self.route = cur.path
                         self.record_trace()
+        print(self.route)
