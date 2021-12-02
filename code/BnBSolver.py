@@ -21,7 +21,7 @@ class Node:
 class BnBSolver(BaseSolver):
     def __init__(self):
         super().__init__()
-    
+
     def get_upper_bound(self, node):
         n = len(self.matrix)
         dist = node.get_cur_distance()
@@ -45,26 +45,31 @@ class BnBSolver(BaseSolver):
     
     # Get the MST total distance based on Prim algorithm
     def mst(self, not_seen):
-        self.src = random.choice(list(not_seen))
-        
-        q = [self.src]
+        cur = random.choice(list(not_seen))
         distance = 0
+        seen = set()
 
         for _ in range(len(not_seen)-1):
             tmp = float('inf')
             tmp_node = -1
-            cur = q.pop(0)
-            if cur not in not_seen: continue
+            if len(not_seen) == 1:
+                last = list(not_seen)[0]
+                for j in seen:
+                    if self.matrix[j][last] < tmp:
+                        tmp = self.matrix[j][last]
+                distance += tmp
+                break
+            if cur in seen: continue
+            seen.add(cur)
             not_seen.discard(cur)
-
             for next_node in not_seen:
-                if self.matrix[cur][next_node] < tmp:
-                    tmp = self.matrix[cur][next_node]
-                    tmp_node = next_node
-
-            q.append(tmp_node)
+                for i in seen:
+                    if self.matrix[i][next_node] < tmp:
+                        tmp = self.matrix[i][next_node]
+                        tmp_node = next_node
+            cur = tmp_node
             distance += tmp
-        
+
         return distance
 
     # Algorithm to calculate the lower bound
@@ -83,8 +88,8 @@ class BnBSolver(BaseSolver):
         
         return dist
 
-    def solve(self, time, seed):
-        super().solve(time, seed)
+    def solve(self, cutoff, seed):
+        super().solve(cutoff, seed)
         n = len(self.matrix)
         node = Node([random.randint(0, n-1)], self.matrix)
         self.route, self.sol = self.get_upper_bound(node)
@@ -92,20 +97,19 @@ class BnBSolver(BaseSolver):
         node.lower_bound = self.get_lower_bound(node)
         q = [node]
         heapq.heapify(q)
-        print(node.path)
         while q:
             cur = heapq.heappop(q)
-            if cur.lower_bound > self.sol: continue
-            else:
+            if cur.lower_bound < self.sol:
                 if len(cur.path) < n - 1:
                     cur_path = cur.path[:]
                     for i in range(n):
                         if i not in cur.path:
                             cur_path.append(i)
-                            new_node = Node(copy.deepcopy(cur_path), self.matrix)
+                            new_node = Node(cur_path[:], self.matrix)
                             cur_bound = self.get_lower_bound(new_node)
-                            if cur_bound <= self.sol:
+                            if cur_bound < self.sol:
                                 new_node.lower_bound = cur_bound
+                                print(new_node.lower_bound, new_node.path)
                                 heapq.heappush(q, new_node)
                             cur_path.pop()
                 else:
@@ -118,4 +122,11 @@ class BnBSolver(BaseSolver):
                         self.sol = cur_dist
                         self.route = cur.path
                         self.record_trace()
-        print(self.route)
+
+
+if __name__ == '__main__':
+    bnb = BnBSolver()
+    bnb.matrix = [[0,2,3,1,2], [2,0,4,6,10], [3,4,0,2,9], [1,6,2,0,5], [2,10,9,5,0]]
+    #bnb.matrix = [[0,2,3],[2,0,1],[3,1,0]]
+    not_seen = set([0,1,2,3,4])
+    print(bnb.mst(not_seen))
