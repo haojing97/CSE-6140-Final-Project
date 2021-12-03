@@ -46,9 +46,10 @@ class LS2Solver(BaseSolver):
     def update(self):
         self.cur_route = self.best_neighbor_route
         self.cur_cost = self.best_neighbor_cost
-        self.sol = self.cur_cost
-        self.route = self.cur_route
-        self.record_trace()
+        if self.cur_cost < self.sol:
+            self.sol = self.cur_cost
+            self.route = self.cur_route
+            self.record_trace()
 
     def solve(self, cutoff, seed):
         super().solve(cutoff, seed)
