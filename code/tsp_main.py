@@ -12,7 +12,7 @@ from LS2Solver import LS2Solver
 
 def get_filename(args):
     filename = '{}_{}_{}'.format(os.path.basename(
-        args.inst).split()[0], args.alg, args.time)
+        args.inst).split('.')[0], args.alg, args.time)
     if args.seed:
         filename += '_{}'.format(args.seed)
     return filename
