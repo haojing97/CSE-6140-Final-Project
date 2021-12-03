@@ -6,14 +6,12 @@ import random
 import time
 from BaseSolver import BaseSolver
 
-# LS1Solver is the a simulated annealing solver.
-
 
 class LS1Solver(BaseSolver):
     def __init__(self):
         super().__init__()
 
-        self.restart = 16  # restart times
+        self.restart = 4  # restart times
         self.temp = 0
         self.param = 0
 
@@ -25,7 +23,7 @@ class LS1Solver(BaseSolver):
     # initialize temperature and annealing parameter
     def init_temp(self):
         self.temp = 1e8
-        self.param = 0.999
+        self.param = 0.99991
 
     # randomly pick up a permutation as the initial route
     def init_route(self):
