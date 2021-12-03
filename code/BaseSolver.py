@@ -31,7 +31,7 @@ class BaseSolver(object):
         # use matrix representation
         n = len(coordinates)
         self.size = n
-        self.matrix = [[0] * n for _ in range(n)]
+        self.matrix = [[float('inf')] * n for _ in range(n)]
         for i in range(n):
             for j in range(n):
                 self.matrix[i][j] = round(
