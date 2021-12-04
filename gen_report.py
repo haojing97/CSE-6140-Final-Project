@@ -36,14 +36,14 @@ for inst in insts:
         print(inst + ',' + alg + ',' + str('{:.2f}'.format(time / rep)) + ',' + str(total / rep) + ',' +
               str('{:.2f}'.format(err)))
 
-        # BnB part
-        with open('output/{}_{}_{}.trace'.format(inst, 'BnB', '600')) as f:
-            for line in f:
-                pass
-            last_line = line
-            time = float(last_line.split(',')[0])
+    # BnB part
+    with open('output/{}_{}_{}.trace'.format(inst, 'BnB', '600')) as f:
+        for line in f:
+            pass
+        last_line = line
+        time = float(last_line.split(',')[0])
         with open('output/{}_{}_{}.sol'.format(inst, 'BnB', '600')) as f:
             sol = int(f.readline().strip())
         err = (sol - opt[inst]) / opt[inst]
-        print(inst + ',' + alg + ',' + str('{:.2f}'.format(time)) + ',' + str(sol) + ',' +
-              str('{:.2f}'.format(err)))
+        print(inst + ',' + 'BnB' + ',' + str('{:.2f}'.format(time)) + ',' + str(sol) + ',' +
+            str('{:.2f}'.format(err)))

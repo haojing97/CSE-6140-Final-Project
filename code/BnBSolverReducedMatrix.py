@@ -63,7 +63,7 @@ def reduce_row(matrix, row):
                 matrix[i][j] -= row[i]
 
 
-class BnBSolver(BaseSolver):
+class BnBSolverReducedMatrix(BaseSolver):
     def __init__(self, matrix=[]):
         super().__init__(matrix=matrix)
 
